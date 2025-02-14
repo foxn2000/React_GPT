@@ -3,7 +3,15 @@ import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { SendHorizontal } from "lucide-react";
 import { cn } from "../lib/utils";
-import { AVAILABLE_MODELS } from "../services/openai";
+import { AVAILABLE_MODELS as OPENAI_MODELS } from "../services/openai";
+import { AVAILABLE_MODELS as GROQ_MODELS } from "../services/groq";
+import { AVAILABLE_MODELS as GEMINI_MODELS } from "../services/gemini";
+
+const AVAILABLE_MODELS = {
+  ...OPENAI_MODELS,
+  ...GROQ_MODELS,
+  ...GEMINI_MODELS
+};
 
 const ChatInput = ({ onSendMessage, isLoading, theme }) => {
   const [selectedModel, setSelectedModel] = useState('gpt-4o-mini');

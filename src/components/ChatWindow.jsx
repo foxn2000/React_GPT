@@ -1,7 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
-import { generateChatResponse } from '../services/openai';
+import { generateChatResponse as generateOpenAIResponse } from '../services/openai';
+import { generateChatResponse as generateGroqResponse } from '../services/groq';
+import { generateChatResponse as generateGeminiResponse } from '../services/gemini';
 import { Card } from "./ui/card";
 import { ScrollArea } from "./ui/scroll-area";
 import { Loader2 } from "lucide-react";
@@ -40,13 +42,23 @@ const ChatWindow = ({ theme, selectedConversation, onNewConversation, onUpdateCo
   }, [messages]);
 
   const handleSendMessage = async (content, model) => {
+    let generateResponse;
+    if (model.startsWith('gpt-')) {
+      generateResponse = generateOpenAIResponse;
+    } else if (model === 'llama-3.3-70b-versatile') {
+      generateResponse = generateGroqResponse;
+    } else if (model === 'gemini-2.0-flash') {
+      generateResponse = generateGeminiResponse;
+    } else {
+      generateResponse = generateOpenAIResponse; // デフォルト
+    }
     const userMessage = { role: 'user', content };
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
     setIsLoading(true);
     setError(null);
 
-    const response = await generateChatResponse(updatedMessages, model);
+    const response = await generateResponse(updatedMessages, model);
 
     if (response.success) {
       const aiResponse = {
