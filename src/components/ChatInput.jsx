@@ -3,8 +3,10 @@ import { Textarea } from "./ui/textarea";
 import { Button } from "./ui/button";
 import { SendHorizontal } from "lucide-react";
 import { cn } from "../lib/utils";
+import { AVAILABLE_MODELS } from "../services/openai";
 
 const ChatInput = ({ onSendMessage, isLoading, theme }) => {
+  const [selectedModel, setSelectedModel] = useState('gpt-4o-mini');
   const textareaRef = useRef(null);
   const [message, setMessage] = useState('');
 
@@ -18,7 +20,7 @@ const ChatInput = ({ onSendMessage, isLoading, theme }) => {
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message.trim() && !isLoading) {
-      onSendMessage(message.trim());
+      onSendMessage(message.trim(), selectedModel);
       setMessage('');
       if (textareaRef.current) {
         textareaRef.current.style.height = 'auto';
@@ -37,13 +39,37 @@ const ChatInput = ({ onSendMessage, isLoading, theme }) => {
 <form 
   onSubmit={handleSubmit}
   className={cn(
-    "flex items-end gap-2 p-4 border-t transition-all duration-300 shadow-inner glass-effect",
+    "flex flex-col gap-2 p-4 border-t transition-all duration-300 shadow-inner glass-effect",
     theme === "dark" 
       ? "border-gray-700/50 bg-gray-800/50 shadow-gray-900/20" 
       : "border-gray-200/50 bg-gray-50/50 shadow-gray-200/50"
   )}
 >
-      <div className="flex-1">
+      <div className="flex gap-2 overflow-x-auto pb-2">
+        {Object.entries(AVAILABLE_MODELS).map(([value, label]) => (
+          <Button
+            key={value}
+            type="button"
+            disabled={isLoading}
+            onClick={() => setSelectedModel(value)}
+            className={cn(
+              "transition-all duration-300 shadow-lg rounded-xl whitespace-nowrap",
+              selectedModel === value
+                ? theme === "dark"
+                  ? "bg-gradient-to-r from-blue-500 to-purple-500 text-white"
+                  : "bg-gradient-to-r from-blue-600 to-purple-600 text-white"
+                : theme === "dark"
+                  ? "bg-gray-800/90 border-gray-700/50 text-gray-300 hover:bg-gray-700"
+                  : "bg-white/90 border-gray-300 text-gray-700 hover:bg-gray-100",
+              "disabled:opacity-50"
+            )}
+          >
+            {label}
+          </Button>
+        ))}
+      </div>
+      <div className="flex gap-2">
+        <div className="flex-1">
         <Textarea
           ref={textareaRef}
           value={message}
@@ -60,7 +86,7 @@ const ChatInput = ({ onSendMessage, isLoading, theme }) => {
           )}
         />
       </div>
-<Button
+      <Button
   type="submit"
   disabled={!message.trim() || isLoading}
   className={cn(
@@ -80,6 +106,7 @@ const ChatInput = ({ onSendMessage, isLoading, theme }) => {
     message.trim() && !isLoading && "group-hover:translate-x-1 group-hover:scale-110"
   )} />
 </Button>
+      </div>
     </form>
   );
 };

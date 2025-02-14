@@ -39,17 +39,21 @@ const ChatWindow = ({ theme, selectedConversation, onNewConversation, onUpdateCo
     return () => clearTimeout(timeoutId);
   }, [messages]);
 
-  const handleSendMessage = async (content) => {
+  const handleSendMessage = async (content, model) => {
     const userMessage = { role: 'user', content };
     const updatedMessages = [...messages, userMessage];
     setMessages(updatedMessages);
     setIsLoading(true);
     setError(null);
 
-    const response = await generateChatResponse(updatedMessages);
+    const response = await generateChatResponse(updatedMessages, model);
 
     if (response.success) {
-      const finalMessages = [...updatedMessages, response.data];
+      const aiResponse = {
+        ...response.data,
+        model: model // Add model information to the message
+      };
+      const finalMessages = [...updatedMessages, aiResponse];
       setMessages(finalMessages);
       // 会話を保存
       if (selectedConversation) {

@@ -1,8 +1,9 @@
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { Card } from "./ui/card";
-import { User, Bot } from "lucide-react";
+import { User, Bot, Sparkles } from "lucide-react";
 import { cn } from "../lib/utils";
 import ReactMarkdown from 'react-markdown';
+import { AVAILABLE_MODELS } from "../services/openai";
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter';
 import { oneDark, oneLight } from 'react-syntax-highlighter/dist/esm/styles/prism';
 
@@ -39,7 +40,7 @@ const ChatMessage = ({ message, theme, isLast }) => {
       </Avatar>
       <div className="flex-1 space-y-2">
 <Card className={cn(
-  "p-4 transition-all duration-300 shadow-md gradient-border",
+  "p-4 transition-all duration-300 shadow-md gradient-border relative",
   theme === "dark" 
     ? isUser 
       ? "bg-gray-800/90 hover:bg-gray-800 border-gray-700" 
@@ -48,6 +49,17 @@ const ChatMessage = ({ message, theme, isLast }) => {
       ? "bg-white/90 hover:bg-white" 
       : "bg-white/50 hover:bg-white/60"
 )}>
+          {!isUser && message.model && (
+            <div className={cn(
+              "absolute top-2 right-2 flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium transition-all duration-300",
+              theme === "dark"
+                ? "bg-gray-700/80 text-gray-300 border border-gray-600"
+                : "bg-gray-100/80 text-gray-600 border border-gray-200"
+            )}>
+              <Sparkles className="w-3 h-3" />
+              {AVAILABLE_MODELS[message.model]}
+            </div>
+          )}
           <ReactMarkdown
             className={cn(
               "prose max-w-none break-words",

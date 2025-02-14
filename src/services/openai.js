@@ -5,10 +5,16 @@ const openai = new OpenAI({
   dangerouslyAllowBrowser: true
 });
 
-export const generateChatResponse = async (messages) => {
+export const AVAILABLE_MODELS = {
+  'gpt-4o-mini': 'GPT-4o Mini',
+  'gpt-4o': 'GPT-4o',
+  'chatgpt-4o-latest': 'ChatGPT-4o Latest'
+};
+
+export const generateChatResponse = async (messages, model = 'gpt-4o-mini') => {
   try {
     const response = await openai.chat.completions.create({
-      model: "gpt-4o-mini",
+      model: model,
       messages: messages.map(msg => ({
         role: msg.role,
         content: msg.content
