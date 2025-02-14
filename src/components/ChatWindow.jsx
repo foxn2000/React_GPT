@@ -8,8 +8,8 @@ import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription } from "./ui/alert";
 import { cn } from "../lib/utils";
 
-const ChatWindow = ({ theme }) => {
-  const [messages, setMessages] = useState([]);
+const ChatWindow = ({ theme, selectedConversation, onNewConversation, onUpdateConversation }) => {
+  const [messages, setMessages] = useState(selectedConversation?.messages || []);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
@@ -24,6 +24,16 @@ const ChatWindow = ({ theme }) => {
   };
 
   useEffect(() => {
+    // 会話が選択されたら、そのメッセージを表示
+    if (selectedConversation) {
+      setMessages(selectedConversation.messages);
+      setError(null);
+    } else {
+      setMessages([]);
+    }
+  }, [selectedConversation]);
+
+  useEffect(() => {
     // 少し遅延を入れてスクロールを確実にする
     const timeoutId = setTimeout(scrollToBottom, 100);
     return () => clearTimeout(timeoutId);
@@ -31,17 +41,25 @@ const ChatWindow = ({ theme }) => {
 
   const handleSendMessage = async (content) => {
     const userMessage = { role: 'user', content };
-    setMessages(prev => [...prev, userMessage]);
+    const updatedMessages = [...messages, userMessage];
+    setMessages(updatedMessages);
     setIsLoading(true);
     setError(null);
 
-    const updatedMessages = [...messages, userMessage];
     const response = await generateChatResponse(updatedMessages);
 
     if (response.success) {
-      setMessages(prev => [...prev, response.data]);
+      const finalMessages = [...updatedMessages, response.data];
+      setMessages(finalMessages);
+      // 会話を保存
+      if (selectedConversation) {
+        onUpdateConversation(finalMessages);
+      } else {
+        onNewConversation(finalMessages);
+      }
     } else {
       setError('メッセージの送信中にエラーが発生しました。もう一度お試しください。');
+      setMessages(updatedMessages); // エラー時は元のメッセージを保持
     }
 
     setIsLoading(false);
@@ -49,7 +67,7 @@ const ChatWindow = ({ theme }) => {
 
   return (
     <Card className={cn(
-      "flex flex-col h-[calc(100vh-12rem)] overflow-hidden transition-colors duration-300",
+      "flex flex-col h-full overflow-hidden transition-colors duration-300",
       theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white"
     )}>
       <ScrollArea className="flex-1 p-4">
