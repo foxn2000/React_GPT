@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import ChatWindow from './components/ChatWindow';
 import ChatHistory from './components/ChatHistory';
 import { Button } from "./components/ui/button";
-import { Moon, Sun, Menu } from "lucide-react";
+import { Moon, Sun, Menu, Plus } from "lucide-react";
 import { loadFromLocalStorage, saveToLocalStorage, deleteConversation, clearLocalStorage } from './lib/storage';
 import { cn } from "./lib/utils";
 
@@ -113,6 +113,17 @@ function App() {
                 ) : (
                   <Moon className="h-5 w-5 text-gray-700" />
                 )}
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                className={cn(
+                  "opacity-70 hover:opacity-100",
+                  theme === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-100"
+                )}
+                onClick={() => setSelectedConversation(null)}
+              >
+                <Plus className="h-5 w-5" />
               </Button>
               <Button
                 variant="ghost"
