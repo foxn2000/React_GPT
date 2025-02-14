@@ -12,14 +12,22 @@ const ChatMessage = ({ message, theme, isLast }) => {
 
   return (
 <div className={cn(
-  "flex gap-4 p-4 rounded-lg transition-all duration-300 animate-slideIn shadow-md glass-effect",
-  isUser ? theme === "dark" ? "bg-gray-700/50" : "bg-gray-50" : "bg-transparent",
+  "flex gap-4 p-4 rounded-lg transition-all duration-300 animate-slideIn hover-lift",
+  isUser 
+    ? theme === "dark" 
+      ? "bg-gray-700/40 hover:bg-gray-700/50" 
+      : "bg-gray-50/80 hover:bg-gray-50"
+    : "bg-transparent",
   isLast && "animate-highlight"
 )}>
 <Avatar className={cn(
-  "w-12 h-12 ring-2 transition-shadow duration-300",
-  isUser ? "ring-blue-500/50" : "ring-green-500/50",
-  theme === "dark" ? "shadow-lg shadow-blue-500/20" : ""
+  "w-12 h-12 ring-2 transition-all duration-300 glow",
+  isUser 
+    ? "ring-blue-500/50 hover:ring-blue-400" 
+    : "ring-green-500/50 hover:ring-green-400",
+  theme === "dark" 
+    ? "shadow-lg shadow-blue-500/20 hover:shadow-blue-500/30" 
+    : "hover:shadow-lg"
 )}>
         <AvatarFallback className={avatarBg}>
           {isUser ? (
@@ -31,16 +39,20 @@ const ChatMessage = ({ message, theme, isLast }) => {
       </Avatar>
       <div className="flex-1 space-y-2">
 <Card className={cn(
-  "p-4 transition-colors duration-300 shadow-sm",
+  "p-4 transition-all duration-300 shadow-md gradient-border",
   theme === "dark" 
-    ? isUser ? "bg-gray-800 border-gray-700" : "bg-gray-800/50 border-gray-700" 
-    : isUser ? "bg-white" : "bg-white/50"
+    ? isUser 
+      ? "bg-gray-800/90 hover:bg-gray-800 border-gray-700" 
+      : "bg-gray-800/50 hover:bg-gray-800/60 border-gray-700" 
+    : isUser 
+      ? "bg-white/90 hover:bg-white" 
+      : "bg-white/50 hover:bg-white/60"
 )}>
           <ReactMarkdown
             className={cn(
               "prose max-w-none break-words",
               theme === "dark" ? "prose-invert" : "",
-              "prose-pre:p-0"
+              "prose-pre:p-0 prose-p:leading-relaxed prose-headings:font-semibold"
             )}
             components={{
               code({ node, inline, className, children, ...props }) {
@@ -70,7 +82,7 @@ const ChatMessage = ({ message, theme, isLast }) => {
           </ReactMarkdown>
         </Card>
         <div className={cn(
-          "text-xs",
+          "text-xs mt-2 opacity-60 transition-opacity group-hover:opacity-100",
           theme === "dark" ? "text-gray-400" : "text-gray-500"
         )}>
           {new Date().toLocaleTimeString()}

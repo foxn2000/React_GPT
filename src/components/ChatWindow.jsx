@@ -67,11 +67,11 @@ const ChatWindow = ({ theme, selectedConversation, onNewConversation, onUpdateCo
 
   return (
 <Card className={cn(
-  "flex flex-col h-full overflow-hidden transition-colors duration-300 shadow-lg glass-effect",
-  theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white"
+  "flex flex-col h-full overflow-hidden transition-all duration-300 shadow-xl glass-effect gradient-border",
+  theme === "dark" ? "bg-gray-800/90 border-gray-700" : "bg-white/90"
 )}>
-<ScrollArea className="flex-1 p-4 space-y-4">
-<div className="space-y-6">
+<ScrollArea className="flex-1 p-4 space-y-4 custom-scrollbar">
+<div className="space-y-6 px-2">
           {messages.map((message, index) => (
             <ChatMessage 
               key={index} 
@@ -81,12 +81,15 @@ const ChatWindow = ({ theme, selectedConversation, onNewConversation, onUpdateCo
             />
           ))}
           {isLoading && (
-            <div className="flex justify-center py-4">
-<Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+            <div className="flex justify-center py-6">
+              <div className="relative">
+                <Loader2 className="h-8 w-8 animate-spin text-blue-500" />
+                <div className="absolute inset-0 animate-pulse bg-blue-500/10 rounded-full blur-xl" />
+              </div>
             </div>
           )}
           {error && (
-            <Alert variant="destructive" className="mx-4">
+            <Alert variant="destructive" className="mx-4 animate-slideIn">
               <AlertDescription>{error}</AlertDescription>
             </Alert>
           )}

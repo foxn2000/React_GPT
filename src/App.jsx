@@ -118,8 +118,10 @@ function App() {
                 variant="ghost"
                 size="icon"
                 className={cn(
-                  "opacity-70 hover:opacity-100",
-                  theme === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-100"
+                  "transition-all duration-300",
+                  theme === "dark" 
+                    ? "hover:bg-gray-800 text-gray-300 hover:text-white" 
+                    : "hover:bg-gray-100 text-gray-700 hover:text-gray-900"
                 )}
                 onClick={() => setSelectedConversation(null)}
               >
@@ -129,7 +131,10 @@ function App() {
                 variant="ghost"
                 size="icon"
                 className={cn(
-                  theme === "dark" ? "hover:bg-gray-800" : "hover:bg-gray-100"
+                  "transition-all duration-300",
+                  theme === "dark" 
+                    ? "hover:bg-gray-800 text-gray-300 hover:text-white" 
+                    : "hover:bg-gray-100 text-gray-700 hover:text-gray-900"
                 )}
                 onClick={() => setIsHistoryOpen(!isHistoryOpen)}
               >
