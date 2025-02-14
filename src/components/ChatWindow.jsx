@@ -1,59 +1,32 @@
 import { useState, useRef, useEffect } from 'react';
-import styled from '@emotion/styled';
 import ChatMessage from './ChatMessage';
 import ChatInput from './ChatInput';
 import { generateChatResponse } from '../services/openai';
-import { FaSpinner } from 'react-icons/fa';
+import { Card } from "./ui/card";
+import { ScrollArea } from "./ui/scroll-area";
+import { Loader2 } from "lucide-react";
+import { Alert, AlertDescription } from "./ui/alert";
+import { cn } from "../lib/utils";
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  max-width: 800px;
-  margin: 0 auto;
-  background-color: #ffffff;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-`;
-
-const MessagesContainer = styled.div`
-  flex-grow: 1;
-  overflow-y: auto;
-  padding: 1rem;
-`;
-
-const LoadingSpinner = styled.div`
-  display: flex;
-  justify-content: center;
-  padding: 1rem;
-  color: #007bff;
-  animation: spin 1s linear infinite;
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-`;
-
-const ErrorMessage = styled.div`
-  color: #dc3545;
-  padding: 0.5rem;
-  margin: 0.5rem;
-  text-align: center;
-  background-color: #f8d7da;
-  border-radius: 4px;
-`;
-
-const ChatWindow = () => {
+const ChatWindow = ({ theme }) => {
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const messagesEndRef = useRef(null);
 
   const scrollToBottom = () => {
-    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'end'
+      });
+    }
   };
 
   useEffect(() => {
-    scrollToBottom();
+    // 少し遅延を入れてスクロールを確実にする
+    const timeoutId = setTimeout(scrollToBottom, 100);
+    return () => clearTimeout(timeoutId);
   }, [messages]);
 
   const handleSendMessage = async (content) => {
@@ -75,21 +48,39 @@ const ChatWindow = () => {
   };
 
   return (
-    <Container>
-      <MessagesContainer>
-        {messages.map((message, index) => (
-          <ChatMessage key={index} message={message} />
-        ))}
-        {isLoading && (
-          <LoadingSpinner>
-            <FaSpinner size={24} />
-          </LoadingSpinner>
-        )}
-        {error && <ErrorMessage>{error}</ErrorMessage>}
-        <div ref={messagesEndRef} />
-      </MessagesContainer>
-      <ChatInput onSendMessage={handleSendMessage} isLoading={isLoading} />
-    </Container>
+    <Card className={cn(
+      "flex flex-col h-[calc(100vh-12rem)] overflow-hidden transition-colors duration-300",
+      theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white"
+    )}>
+      <ScrollArea className="flex-1 p-4">
+        <div className="space-y-4">
+          {messages.map((message, index) => (
+            <ChatMessage 
+              key={index} 
+              message={message} 
+              theme={theme}
+              isLast={index === messages.length - 1} 
+            />
+          ))}
+          {isLoading && (
+            <div className="flex justify-center py-4">
+              <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
+            </div>
+          )}
+          {error && (
+            <Alert variant="destructive" className="mx-4">
+              <AlertDescription>{error}</AlertDescription>
+            </Alert>
+          )}
+          <div ref={messagesEndRef} />
+        </div>
+      </ScrollArea>
+      <ChatInput 
+        onSendMessage={handleSendMessage} 
+        isLoading={isLoading} 
+        theme={theme}
+      />
+    </Card>
   );
 };
 

@@ -1,62 +1,28 @@
-import { useState } from 'react';
-import styled from '@emotion/styled';
-import { FaPaperPlane } from 'react-icons/fa';
+import { useState, useRef, useEffect } from 'react';
+import { Textarea } from "./ui/textarea";
+import { Button } from "./ui/button";
+import { SendHorizontal, Paperclip } from "lucide-react";
+import { cn } from "../lib/utils";
 
-const InputContainer = styled.form`
-  display: flex;
-  gap: 1rem;
-  padding: 1rem;
-  background-color: #ffffff;
-  border-top: 1px solid #e0e0e0;
-`;
-
-const TextArea = styled.textarea`
-  flex-grow: 1;
-  padding: 0.75rem;
-  border: 1px solid #e0e0e0;
-  border-radius: 4px;
-  resize: none;
-  font-family: inherit;
-  font-size: 1rem;
-  min-height: 40px;
-  max-height: 120px;
-  
-  &:focus {
-    outline: none;
-    border-color: #007bff;
-  }
-`;
-
-const SendButton = styled.button`
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 4px;
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  transition: background-color 0.2s;
-  
-  &:hover {
-    background-color: #0056b3;
-  }
-  
-  &:disabled {
-    background-color: #cccccc;
-    cursor: not-allowed;
-  }
-`;
-
-const ChatInput = ({ onSendMessage, isLoading }) => {
+const ChatInput = ({ onSendMessage, isLoading, theme }) => {
+  const textareaRef = useRef(null);
   const [message, setMessage] = useState('');
+
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = `${Math.min(textareaRef.current.scrollHeight, 200)}px`;
+    }
+  }, [message]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     if (message.trim() && !isLoading) {
       onSendMessage(message.trim());
       setMessage('');
+      if (textareaRef.current) {
+        textareaRef.current.style.height = 'auto';
+      }
     }
   };
 
@@ -68,19 +34,58 @@ const ChatInput = ({ onSendMessage, isLoading }) => {
   };
 
   return (
-    <InputContainer onSubmit={handleSubmit}>
-      <TextArea
-        value={message}
-        onChange={(e) => setMessage(e.target.value)}
-        onKeyPress={handleKeyPress}
-        placeholder="メッセージを入力..."
-        disabled={isLoading}
-      />
-      <SendButton type="submit" disabled={!message.trim() || isLoading}>
-        <FaPaperPlane />
-        送信
-      </SendButton>
-    </InputContainer>
+    <form 
+      onSubmit={handleSubmit}
+      className={cn(
+        "flex items-end gap-2 p-4 border-t transition-colors duration-300",
+        theme === "dark" ? "border-gray-700 bg-gray-800/50" : "border-gray-200 bg-gray-50/50"
+      )}
+    >
+      <div className="relative flex-1">
+        <Textarea
+          ref={textareaRef}
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
+          onKeyDown={handleKeyPress}
+          placeholder="メッセージを入力... (Shift + Enter で改行)"
+          disabled={isLoading}
+          className={cn(
+            "min-h-[50px] max-h-[200px] resize-none pr-12 transition-colors duration-300",
+            theme === "dark" 
+              ? "bg-gray-800 border-gray-700 focus:border-gray-600" 
+              : "bg-white focus:border-gray-300",
+            "placeholder:text-gray-400"
+          )}
+        />
+        <Button
+          size="icon"
+          variant="ghost"
+          className={cn(
+            "absolute right-2 bottom-2 h-8 w-8 opacity-50 hover:opacity-100 transition-opacity",
+            theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+          )}
+          disabled={isLoading}
+        >
+          <Paperclip className="h-4 w-4" />
+        </Button>
+      </div>
+      <Button
+        type="submit"
+        disabled={!message.trim() || isLoading}
+        className={cn(
+          "h-10 px-4 transition-all duration-300",
+          message.trim() && !isLoading
+            ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+            : theme === "dark" ? "bg-gray-700" : "bg-gray-200",
+          "disabled:opacity-50"
+        )}
+      >
+        <SendHorizontal className={cn(
+          "h-5 w-5 transition-transform duration-300",
+          message.trim() && !isLoading && "group-hover:translate-x-1"
+        )} />
+      </Button>
+    </form>
   );
 };
 
