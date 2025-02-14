@@ -95,7 +95,7 @@ function App() {
   "text-base text-gray-600",
   theme === "dark" && "text-gray-400"
 )}>
-                GPT-4-miniを使用したインテリジェントチャットボット
+                インテリジェントチャットボット
               </p>
             </div>
             <div className="flex items-center gap-2">
