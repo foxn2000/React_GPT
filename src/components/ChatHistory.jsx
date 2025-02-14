@@ -14,7 +14,7 @@ const ChatHistory = ({
 }) => {
   return (
     <div className={cn(
-      "w-80 h-full border-r flex flex-col transition-colors duration-300",
+      "w-80 h-full border-l flex flex-col transition-colors duration-300",
       theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
     )}>
       <div className={cn(
@@ -43,7 +43,7 @@ const ChatHistory = ({
             variant="ghost"
             size="icon"
             className={cn(
-              "h-8 w-8 lg:hidden",
+              "h-8 w-8",
               theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
             )}
             onClick={onClose}
