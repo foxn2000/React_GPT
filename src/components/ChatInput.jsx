@@ -64,7 +64,7 @@ const ChatInput = ({ onSendMessage, isLoading, theme }) => {
   type="submit"
   disabled={!message.trim() || isLoading}
   className={cn(
-    "h-10 px-4 transition-all duration-300 shadow-lg rounded-xl group",
+    "h-[50px] px-4 transition-all duration-300 shadow-lg rounded-xl group",
     message.trim() && !isLoading
       ? theme === "dark"
         ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 hover:shadow-blue-500/20 hover:scale-105 text-white"
