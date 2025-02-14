@@ -34,13 +34,13 @@ const ChatInput = ({ onSendMessage, isLoading, theme }) => {
   };
 
   return (
-    <form 
-      onSubmit={handleSubmit}
-      className={cn(
-        "flex items-end gap-2 p-4 border-t transition-colors duration-300",
-        theme === "dark" ? "border-gray-700 bg-gray-800/50" : "border-gray-200 bg-gray-50/50"
-      )}
-    >
+<form 
+  onSubmit={handleSubmit}
+  className={cn(
+    "flex items-end gap-2 p-4 border-t transition-colors duration-300 shadow-inner glass-effect",
+    theme === "dark" ? "border-gray-700 bg-gray-800/50" : "border-gray-200 bg-gray-50/50"
+  )}
+>
       <div className="relative flex-1">
         <Textarea
           ref={textareaRef}
@@ -57,34 +57,34 @@ const ChatInput = ({ onSendMessage, isLoading, theme }) => {
             "placeholder:text-gray-400"
           )}
         />
-        <Button
-          size="icon"
-          variant="ghost"
-          className={cn(
-            "absolute right-2 bottom-2 h-8 w-8 opacity-50 hover:opacity-100 transition-opacity",
-            theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
-          )}
-          disabled={isLoading}
-        >
-          <Paperclip className="h-4 w-4" />
-        </Button>
+<Button
+  size="icon"
+  variant="ghost"
+  className={cn(
+    "absolute right-2 bottom-2 h-8 w-8 opacity-50 hover:opacity-100 transition-opacity",
+    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+  )}
+  disabled={isLoading}
+>
+  <Paperclip className="h-5 w-5" />
+</Button>
       </div>
-      <Button
-        type="submit"
-        disabled={!message.trim() || isLoading}
-        className={cn(
-          "h-10 px-4 transition-all duration-300",
-          message.trim() && !isLoading
-            ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
-            : theme === "dark" ? "bg-gray-700" : "bg-gray-200",
-          "disabled:opacity-50"
-        )}
-      >
-        <SendHorizontal className={cn(
-          "h-5 w-5 transition-transform duration-300",
-          message.trim() && !isLoading && "group-hover:translate-x-1"
-        )} />
-      </Button>
+<Button
+  type="submit"
+  disabled={!message.trim() || isLoading}
+  className={cn(
+    "h-10 px-4 transition-all duration-300 shadow-md",
+    message.trim() && !isLoading
+      ? "bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600"
+      : theme === "dark" ? "bg-gray-700" : "bg-gray-200",
+    "disabled:opacity-50"
+  )}
+>
+  <SendHorizontal className={cn(
+    "h-6 w-6 transition-transform duration-300",
+    message.trim() && !isLoading && "group-hover:translate-x-1"
+  )} />
+</Button>
     </form>
   );
 };

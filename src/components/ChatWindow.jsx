@@ -66,12 +66,12 @@ const ChatWindow = ({ theme, selectedConversation, onNewConversation, onUpdateCo
   };
 
   return (
-    <Card className={cn(
-      "flex flex-col h-full overflow-hidden transition-colors duration-300",
-      theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white"
-    )}>
-      <ScrollArea className="flex-1 p-4">
-        <div className="space-y-4">
+<Card className={cn(
+  "flex flex-col h-full overflow-hidden transition-colors duration-300 shadow-lg glass-effect",
+  theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white"
+)}>
+<ScrollArea className="flex-1 p-4 space-y-4">
+<div className="space-y-6">
           {messages.map((message, index) => (
             <ChatMessage 
               key={index} 
@@ -82,7 +82,7 @@ const ChatWindow = ({ theme, selectedConversation, onNewConversation, onUpdateCo
           ))}
           {isLoading && (
             <div className="flex justify-center py-4">
-              <Loader2 className="h-6 w-6 animate-spin text-blue-500" />
+<Loader2 className="h-8 w-8 animate-spin text-blue-500" />
             </div>
           )}
           {error && (

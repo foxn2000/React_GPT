@@ -76,38 +76,38 @@ function App() {
   };
 
   return (
-    <div className={cn(
-      "min-h-screen transition-colors duration-300",
-      theme === "dark" ? "bg-gray-900" : "bg-gray-50"
-    )}>
+<div className={cn(
+  "min-h-screen transition-colors duration-300 bg-gradient-to-b from-gray-50 to-gray-200",
+  theme === "dark" ? "bg-gradient-to-b from-gray-900 to-gray-800" : "bg-gradient-to-b from-gray-50 to-gray-200"
+)}>
       <div className="flex h-screen relative">
         {/* メインコンテンツ */}
         <div className="flex-1 flex flex-col min-w-0">
-          <header className="flex justify-between items-center p-4 border-b transition-colors duration-300 relative z-10">
+          <header className="flex justify-between items-center p-4 border-b transition-colors duration-300 relative z-10 shadow-md">
             <div>
-              <h1 className={cn(
-                "text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent",
-                theme === "dark" && "from-blue-400 to-purple-400"
-              )}>
+<h1 className={cn(
+  "text-3xl font-extrabold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent",
+  theme === "dark" && "from-blue-400 to-purple-400"
+)}>
                 AI Chat Assistant
               </h1>
-              <p className={cn(
-                "text-sm text-gray-600",
-                theme === "dark" && "text-gray-400"
-              )}>
+<p className={cn(
+  "text-base text-gray-600",
+  theme === "dark" && "text-gray-400"
+)}>
                 GPT-4-miniを使用したインテリジェントチャットボット
               </p>
             </div>
             <div className="flex items-center gap-2">
-              <Button
-                variant="outline"
-                size="icon"
-                onClick={toggleTheme}
-                className={cn(
-                  "rounded-full w-9 h-9",
-                  theme === "dark" ? "border-gray-700 hover:bg-gray-800" : "hover:bg-gray-100"
-                )}
-              >
+<Button
+  variant="outline"
+  size="icon"
+  onClick={toggleTheme}
+  className={cn(
+    "rounded-full w-10 h-10 shadow-lg",
+    theme === "dark" ? "border-gray-700 hover:bg-gray-800" : "hover:bg-gray-100"
+  )}
+>
                 {theme === "dark" ? (
                   <Sun className="h-5 w-5 text-yellow-500" />
                 ) : (

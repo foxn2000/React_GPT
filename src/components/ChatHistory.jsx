@@ -13,10 +13,10 @@ const ChatHistory = ({
   onClose 
 }) => {
   return (
-    <div className={cn(
-      "w-80 h-full border-l flex flex-col transition-colors duration-300",
-      theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
-    )}>
+<div className={cn(
+  "w-80 h-full border-l flex flex-col transition-colors duration-300 shadow-lg glass-effect",
+  theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+)}>
       <div className={cn(
         "p-4 border-b flex justify-between items-center",
         theme === "dark" ? "border-gray-700" : "border-gray-200"
@@ -28,28 +28,28 @@ const ChatHistory = ({
           会話履歴
         </h2>
         <div className="flex gap-2">
-          <Button
-            variant="ghost"
-            size="icon"
-            className={cn(
-              "h-8 w-8",
-              theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
-            )}
-            onClick={onClearHistory}
-          >
-            <Trash2 className="h-4 w-4" />
-          </Button>
-          <Button
-            variant="ghost"
-            size="icon"
-            className={cn(
-              "h-8 w-8",
-              theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
-            )}
-            onClick={onClose}
-          >
-            <X className="h-4 w-4" />
-          </Button>
+<Button
+  variant="ghost"
+  size="icon"
+  className={cn(
+    "h-8 w-8",
+    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+  )}
+  onClick={onClearHistory}
+>
+  <Trash2 className="h-5 w-5" />
+</Button>
+<Button
+  variant="ghost"
+  size="icon"
+  className={cn(
+    "h-8 w-8",
+    theme === "dark" ? "hover:bg-gray-700" : "hover:bg-gray-100"
+  )}
+  onClick={onClose}
+>
+  <X className="h-5 w-5" />
+</Button>
         </div>
       </div>
       <ScrollArea className="flex-1">
